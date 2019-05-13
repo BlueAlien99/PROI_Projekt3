@@ -28,6 +28,7 @@ public:
 		cout<<"1  - Create new board"<<endl;
 		cout<<"2  - Run algorithm"<<endl;
 		cout<<"3  - Print board in debug mode"<<endl;
+		cout<<"20 - Solve problems from \"problems.txt\""<<endl;
 		cout<<"22 - Generate \"problems.txt\" with help"<<endl;
 		cout<<"0  - Exit"<<endl;
 	}
@@ -45,6 +46,9 @@ public:
 					break;
 				case 3:
 					printDebBoard();
+					break;
+				case 20:
+					IOHandler::solveProblems();
 					break;
 				case 22:
 					IOHandler::genProblemsTxt();

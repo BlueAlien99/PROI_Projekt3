@@ -4,6 +4,7 @@
 class IOHandler{
 public:
 	static void genProblemsTxt();
+	static void solveProblems();
 };
 
 #endif

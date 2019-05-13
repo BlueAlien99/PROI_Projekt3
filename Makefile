@@ -1,5 +1,5 @@
 CC := gcc -std=c++11
-CFLAGS := -Wall -pedantic -Wextra #-g
+CFLAGS := -Wall -pedantic -Wextra -g
 INC := -lstdc++ -Iinclude/
 #LIB :=
 
