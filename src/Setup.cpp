@@ -2,6 +2,7 @@
 
 #include "../include/Utilities.h"
 #include "../include/Interface.h"
+#include "../include/IOHandler.h"
 
 #include <iostream>
 #include <memory>
@@ -24,10 +25,11 @@ public:
 	void help(){
 		cout<<endl;
 		cout<<"----  MENU  ----"<<endl;
-		cout<<"1 - Create new board"<<endl;
-		cout<<"2 - Run algorithm"<<endl;
-		cout<<"3 - Print board in debug mode"<<endl;
-		cout<<"0 - Exit"<<endl;
+		cout<<"1  - Create new board"<<endl;
+		cout<<"2  - Run algorithm"<<endl;
+		cout<<"3  - Print board in debug mode"<<endl;
+		cout<<"22 - Generate \"problems.txt\" with help"<<endl;
+		cout<<"0  - Exit"<<endl;
 	}
 
 	void run(){
@@ -43,6 +45,9 @@ public:
 					break;
 				case 3:
 					printDebBoard();
+					break;
+				case 22:
+					IOHandler::genProblemsTxt();
 					break;
 				case 0:
 					cout<<"Exiting..."<<endl;
