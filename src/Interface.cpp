@@ -190,7 +190,7 @@ public:
 				&& algoPlace<Queen>(queens, 0, 0, 1, (fig -= bishops->getCount()))
 				&& algoPlace<Pawn>(pawns, 0, 0, 1, (fig -= queens->getCount()))
 				&& algoPlace<Knight>(knights, 0, 0, 1, (fig -= pawns->getCount()))){
-			printBoard(0);
+			cout<<getBoardStr();
 			result = 1;
 		} else{
 			cout<<endl<<"Placement impossible!"<<endl;
@@ -207,60 +207,62 @@ public:
 			}
 		}
 		if(batch || save){
-			IOHandler::exportVisualised(result, getConfigStr(), "xd");
+			IOHandler::exportVisualised(result, getConfigStr(), getBoardStr());
 		}
 		return result;
 	}
 
-	void printBoard(bool debug){
-		cout<<endl<<"   ";
+	string getBoardStr(bool debug = 0){
+		string str = "";
+		str += "\n   ";
 		for(uint i = 0; i < x; ++i){
-			cout<<i%10<<' ';
+			str += to_string(i%10) + ' ';
 		}
-		cout<<endl;
+		str += '\n';
 		for(uint i = 0; i < y; ++i){
-			cout<<endl<<i%10<<"  ";
+			str += '\n' + to_string(i%10) + "  ";
 			for(uint j = 0; j < x; ++j){
 				if(debug && board[i*x + j] > 0){
 					if(board[i*x + j] > 9){
-						cout<<'*';
+						str += '*';
 					} else{
-						cout<<abs(board[i*x + j])%10;
+						str += to_string(abs(board[i*x + j])%10);
 					}
 				}
 				else if(board[i*x + j] > 0){
-					cout<<'-';
+					str += '-';
 				} else{
 					switch(board[i*x + j]){
 						case 0:
-							cout<<'-';
+							str += '-';
 							break;
 						case -10:
-							cout<<'P';
+							str += 'P';
 							break;
 						case -20:
-							cout<<'R';
+							str += 'R';
 							break;
 						case -30:
-							cout<<'B';
+							str += 'B';
 							break;
 						case -40:
-							cout<<'Q';
+							str += 'Q';
 							break;
 						case -50:
-							cout<<'N';
+							str += 'N';
 							break;
 						case -60:
-							cout<<'K';
+							str += 'K';
 							break;
 						default:
-							cout<<'x';
+							str += 'x';
 					}
 				}
-				cout<<' ';
+				str += ' ';
 			}
 		}
-		cout<<endl;
+		str += '\n';
+		return str;
 	}
 
 	string getConfigStr(){
@@ -294,8 +296,8 @@ bool Interface::algorithm(bool interact, bool batch){
 	return impl->algorithm(interact, batch);
 }
 
-void Interface::printBoard(bool debug){
-	impl->printBoard(debug);
+string Interface::getBoardStr(bool debug){
+	return impl->getBoardStr(debug);
 }
 
 string Interface::getConfigStr(){

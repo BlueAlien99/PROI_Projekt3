@@ -12,7 +12,7 @@ public:
 	~Interface();
 	int isSqFree(uint xx, uint yy);
 	bool algorithm(bool interact = 0, bool batch = 0);
-	void printBoard(bool debug);
+	std::string getBoardStr(bool debug = 0);
 	std::string getConfigStr();
 };
 

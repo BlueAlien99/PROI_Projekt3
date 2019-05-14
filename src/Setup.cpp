@@ -92,7 +92,7 @@ public:
 
 	void printDebBoard(){
 		if(interface){
-			interface->printBoard(1);
+			cout<<interface->getBoardStr(1);
 		} else{
 			cout<<endl<<"Board has not been initialized!"<<endl;
 		}
