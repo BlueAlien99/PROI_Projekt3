@@ -25,7 +25,7 @@ void Tests::run(){
 bool Tests::test1(){
 	cout<<endl<<"**** BEGINNING OF TEST 1 ****"<<endl;
 	Interface interface(6, 6, 2, 0, 6, 0, 2, 0);
-	interface.printConfig();
+	cout<<interface.getConfigStr();
 	bool ret = interface.algorithm();
 	cout<<endl<<"Expected: POSSIBLE"<<endl;
 	cout<<endl<<"**** END OF TEST 1 ****"<<endl;
@@ -35,7 +35,7 @@ bool Tests::test1(){
 bool Tests::test2(){
 	cout<<endl<<"**** BEGINNING OF TEST 2 ****"<<endl;
 	Interface interface(5, 4, 0, 1, 0, 0, 1, 4);
-	interface.printConfig();
+	cout<<interface.getConfigStr();
 	bool ret = interface.algorithm();
 	cout<<endl<<"Expected: POSSIBLE"<<endl;
 	cout<<endl<<"**** END OF TEST 2 ****"<<endl;
@@ -45,7 +45,7 @@ bool Tests::test2(){
 bool Tests::test3(){
 	cout<<endl<<"**** BEGINNING OF TEST 3 ****"<<endl;
 	Interface interface(3, 5, 10);
-	interface.printConfig();
+	cout<<interface.getConfigStr();
 	bool ret = interface.algorithm();
 	cout<<endl<<"Expected: POSSIBLE"<<endl;
 	cout<<endl<<"**** END OF TEST 3 ****"<<endl;
@@ -55,7 +55,7 @@ bool Tests::test3(){
 bool Tests::test4(){
 	cout<<endl<<"**** BEGINNING OF TEST 4 ****"<<endl;
 	Interface interface(6, 6, 0, 0, 0, 7, 0, 0);
-	interface.printConfig();
+	cout<<interface.getConfigStr();
 	bool ret = interface.algorithm();
 	cout<<endl<<"Expected: IMPOSSIBLE"<<endl;
 	cout<<endl<<"**** END OF TEST 4 ****"<<endl;
@@ -65,7 +65,7 @@ bool Tests::test4(){
 bool Tests::test5(){
 	cout<<endl<<"**** BEGINNING OF TEST 5 ****"<<endl;
 	Interface interface(8, 8, 7, 2, 2, 1, 2, 1);
-	interface.printConfig();
+	cout<<interface.getConfigStr();
 	bool ret = interface.algorithm();
 	cout<<endl<<"Expected: POSSIBLE"<<endl;
 	cout<<endl<<"**** END OF TEST 5 ****"<<endl;

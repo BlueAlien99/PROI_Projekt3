@@ -11,9 +11,9 @@ public:
 			uint bi = 0, uint qu = 0, uint kn = 0, uint ki = 0);
 	~Interface();
 	int isSqFree(uint xx, uint yy);
-	bool algorithm();
+	bool algorithm(bool interact = 0, bool batch = 0);
 	void printBoard(bool debug);
-	void printConfig();
+	std::string getConfigStr();
 };
 
 #endif

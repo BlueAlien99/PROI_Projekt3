@@ -2,7 +2,9 @@
 
 #include "../include/Interface.h"
 
+#include <ctime>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 
 using namespace std;
@@ -57,8 +59,29 @@ void IOHandler::solveProblems(){
 		if(!error){
 			Interface board(data[0], data[1], data[2], data[3],
 							data[4], data[5], data[6], data[7]);
-			board.printConfig();
+			cout<<board.getConfigStr();
 			board.algorithm();
 		}
 	}
+	file.close();
+}
+
+void IOHandler::exportVisualised(bool result, string config, string board){
+	ofstream file("solutions_visualised.txt", ios::app);
+	if(!file.is_open()){
+		cout<<endl<<"This should NOT happen! (IOHandler::exportVisualised)";
+		return;
+	}
+	file<<"**** SOLUTION ****"<<endl;
+	time_t t = time(nullptr);
+	file<<put_time(localtime(&t), "%Y-%m-%d %H:%M:%S")<<endl;
+	file<<config;
+	if(!result){
+		file<<"Placement impossible!";
+	} else{
+		file<<board;
+	}
+	file<<"**** ######## ****"<<endl;
+	file<<endl;
+	file.close();
 }

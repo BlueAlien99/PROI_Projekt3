@@ -1,9 +1,11 @@
 #include "../include/Interface.h"
 
 #include "../include/PieceInterface.h"
+#include "../include/IOHandler.h"
 
 #include <cstdlib>
 #include <iostream>
+#include <limits>
 #include <memory>
 #include <vector>
 
@@ -178,9 +180,10 @@ public:
 		}
 	}
 
-	bool algorithm(){
+	bool algorithm(bool interact, bool batch){
 		int fig = pawns->getCount() + rooks->getCount() + bishops->getCount()
 				+ kings->getCount() + knights->getCount() + queens->getCount();
+		bool result;
 		if(algoPlace<King>(kings, 0, 0, 1, fig)
 				&& algoPlace<Rook>(rooks, 0, 0, 1, (fig -= kings->getCount()))
 				&& algoPlace<Bishop>(bishops, 0, 0, 1, (fig -= rooks->getCount()))
@@ -188,11 +191,25 @@ public:
 				&& algoPlace<Pawn>(pawns, 0, 0, 1, (fig -= queens->getCount()))
 				&& algoPlace<Knight>(knights, 0, 0, 1, (fig -= pawns->getCount()))){
 			printBoard(0);
-			return 1;
+			result = 1;
 		} else{
 			cout<<endl<<"Placement impossible!"<<endl;
-			return 0;
+			result = 0;
 		}
+		bool save = 0;
+		if(interact && !batch){
+			char c;
+			cout<<endl<<"Export results? (y/n)"<<endl;
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.get(c);
+			if(c == 'y'){
+				save = 1;
+			}
+		}
+		if(batch || save){
+			IOHandler::exportVisualised(result, getConfigStr(), "xd");
+		}
+		return result;
 	}
 
 	void printBoard(bool debug){
@@ -246,16 +263,18 @@ public:
 		cout<<endl;
 	}
 
-	void printConfig(){
-		cout<<endl;
-		cout<<"Width   = "<<x<<endl;
-		cout<<"Height  = "<<y<<endl;
-		cout<<"Pawns   = "<<pawns->getCount()<<endl;
-		cout<<"Rooks   = "<<rooks->getCount()<<endl;
-		cout<<"Bishops = "<<bishops->getCount()<<endl;
-		cout<<"Queens  = "<<queens->getCount()<<endl;
-		cout<<"Knights = "<<knights->getCount()<<endl;
-		cout<<"Kings   = "<<kings->getCount()<<endl;
+	string getConfigStr(){
+		string str = "";
+		str += '\n';
+		str += "Width   = " + to_string(x) + '\n';
+		str += "Height  = " + to_string(y) + '\n';
+		str += "Pawns   = " + to_string(pawns->getCount()) + '\n';
+		str += "Rooks   = " + to_string(rooks->getCount()) + '\n';
+		str += "Bishops = " + to_string(bishops->getCount()) + '\n';
+		str += "Queens  = " + to_string(queens->getCount()) + '\n';
+		str += "Knights = " + to_string(knights->getCount()) + '\n';
+		str += "Kings   = " + to_string(kings->getCount()) + '\n';
+		return str;
 	}
 };
 
@@ -271,14 +290,14 @@ int Interface::isSqFree(uint xx, uint yy){
 	return impl->isSqFree(xx, yy);
 }
 
-bool Interface::algorithm(){
-	return impl->algorithm();
+bool Interface::algorithm(bool interact, bool batch){
+	return impl->algorithm(interact, batch);
 }
 
 void Interface::printBoard(bool debug){
 	impl->printBoard(debug);
 }
 
-void Interface::printConfig(){
-	impl->printConfig();
+string Interface::getConfigStr(){
+	return impl->getConfigStr();
 }

@@ -79,12 +79,12 @@ public:
 		uint kn = Utilities::get_uint();
 		uint ki = Utilities::get_uint();
 		interface = new Interface(x, y, pa, ro, bi, qu, kn, ki);
-		interface->printConfig();
+		cout<<interface->getConfigStr();
 	}
 
 	void algorithm(){
 		if(interface){
-			interface->algorithm();
+			interface->algorithm(1);
 		} else{
 			cout<<endl<<"Board has not been initialized!"<<endl;
 		}
