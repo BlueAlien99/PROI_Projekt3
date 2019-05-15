@@ -28,7 +28,7 @@ void IOHandler::genProblemsTxt(){
 void IOHandler::solveProblems(){
 	ifstream file("problems.txt");
 	if(!file.is_open()){
-		cout<<endl<<"Could not find \"problems.txt\"...";
+		cout<<endl<<"Could not find \"problems.txt\"..."<<endl;
 		return;
 	}
 	string line;
@@ -63,6 +63,21 @@ void IOHandler::solveProblems(){
 			board.algorithm(0, 1);
 		}
 	}
+	file.close();
+}
+
+void IOHandler::saveSolution(bool result, std::string config, std::string board){
+	ofstream file("solutions.txt", ios::app);
+	if(!file.is_open()){
+		cout<<endl<<"This should NOT happen! (IOHandler::saveSolution)";
+		return;
+	}
+	file<<'{'<<endl;
+	file<<config<<endl;
+	if(result){
+		file<<board<<endl;
+	}
+	file<<'}'<<endl;
 	file.close();
 }
 

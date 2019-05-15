@@ -138,6 +138,27 @@ class Interface::InterfaceImpl{
 		return fr;
 	}
 
+	string getBoardStrPlain(){
+		string str = "";
+		for(uint i = 0; i < x*y; ++i){
+			str += to_string(board[i]) + ' ';
+		}
+		str = str.substr(0, str.size()-1);
+		return str;
+	}
+
+	string getConfigStrPlain(){
+		string str = "";
+		str += to_string(x) + ' ' + to_string(y);
+		str += ' ' + to_string(pawns->getCount());
+		str += ' ' + to_string(rooks->getCount());
+		str += ' ' + to_string(bishops->getCount());
+		str += ' ' + to_string(queens->getCount());
+		str += ' ' + to_string(knights->getCount());
+		str += ' ' + to_string(kings->getCount());
+		return str;
+	}
+
 public:
 
 	InterfaceImpl(uint xx, uint yy, uint pa, uint ro,
@@ -196,6 +217,7 @@ public:
 			cout<<endl<<"Placement impossible!"<<endl;
 			result = 0;
 		}
+		IOHandler::saveSolution(result, getConfigStrPlain(), getBoardStrPlain());
 		bool save = 0;
 		if(interact && !batch){
 			char c;
