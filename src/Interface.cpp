@@ -202,22 +202,64 @@ public:
 	}
 
 	bool algorithm(bool interact, bool batch){
-		int fig = pawns->getCount() + rooks->getCount() + bishops->getCount()
-				+ kings->getCount() + knights->getCount() + queens->getCount();
-		bool result;
-		if(algoPlace<King>(kings, 0, 0, 1, fig)
-				&& algoPlace<Rook>(rooks, 0, 0, 1, (fig -= kings->getCount()))
-				&& algoPlace<Bishop>(bishops, 0, 0, 1, (fig -= rooks->getCount()))
-				&& algoPlace<Queen>(queens, 0, 0, 1, (fig -= bishops->getCount()))
-				&& algoPlace<Pawn>(pawns, 0, 0, 1, (fig -= queens->getCount()))
-				&& algoPlace<Knight>(knights, 0, 0, 1, (fig -= pawns->getCount()))){
-			cout<<getBoardStr();
-			result = 1;
-		} else{
-			cout<<endl<<"Placement impossible!"<<endl;
-			result = 0;
+		bool result = 0;
+		int flag = -1;
+		if(interact && !batch){
+			vector<int> data;
+			try{
+				IOHandler::findSolution(getConfigStrPlain(), &data);
+				if(x*y != data.size()){
+					throw 404;
+				}
+				flag = 0;
+				for(uint i = 0; i < x*y; ++i){
+					board[i] = data[i];
+				}
+			} catch(int er){
+				if(er == 100){
+					flag = 1;
+				}
+			} catch(...){
+				// Do nothing
+			}
 		}
-		IOHandler::saveSolution(result, getConfigStrPlain(), getBoardStrPlain());
+		if(flag == 0 || flag == 1){
+			cout<<endl<<"Solution imported from \"solutions.txt\"!"<<endl;
+			if(flag == 0){
+				cout<<getBoardStr();
+				result = 1;
+			}
+			else if(flag == 1){
+				cout<<endl<<"Placement impossible!"<<endl;
+				result = 0;
+			}
+			char c;
+			cout<<endl<<"Run algorithm anyway? (y/n)"<<endl;
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.get(c);
+			if(c == 'y'){
+				flag = -1;
+			}
+		}
+		if(flag != 0 && flag != 1){
+			delete [] board;
+			board = new int [x*y] ();
+			int fig = pawns->getCount() + rooks->getCount() + bishops->getCount()
+					+ kings->getCount() + knights->getCount() + queens->getCount();
+			if(algoPlace<King>(kings, 0, 0, 1, fig)
+					&& algoPlace<Rook>(rooks, 0, 0, 1, (fig -= kings->getCount()))
+					&& algoPlace<Bishop>(bishops, 0, 0, 1, (fig -= rooks->getCount()))
+					&& algoPlace<Queen>(queens, 0, 0, 1, (fig -= bishops->getCount()))
+					&& algoPlace<Pawn>(pawns, 0, 0, 1, (fig -= queens->getCount()))
+					&& algoPlace<Knight>(knights, 0, 0, 1, (fig -= pawns->getCount()))){
+				cout<<getBoardStr();
+				result = 1;
+			} else{
+				cout<<endl<<"Placement impossible!"<<endl;
+				result = 0;
+			}
+			IOHandler::saveSolution(result, getConfigStrPlain(), getBoardStrPlain());
+		}
 		bool save = 0;
 		if(interact && !batch){
 			char c;

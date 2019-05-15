@@ -12,7 +12,7 @@ using namespace std;
 void IOHandler::genProblemsTxt(){
 	ofstream file("problems.txt");
 	if(!file.is_open()){
-		cout<<endl<<"This should NOT happen! (IOHandler::genProblemsTxt)";
+		cout<<endl<<"This should NOT have happened! (IOHandler::genProblemsTxt)";
 		return;
 	}
 	file<<"# Each config must be entered in a new line"<<endl;
@@ -66,10 +66,47 @@ void IOHandler::solveProblems(){
 	file.close();
 }
 
+void IOHandler::findSolution(string config, vector<int> *board){
+	ifstream file("solutions.txt");
+	if(!file.is_open()){
+		string str = "ERROR: Could not open file!";
+		throw str;
+	}
+	string line;
+	while(!file.eof()){
+		getline(file, line);
+		if(config == line && !file.eof()){
+			getline(file, line);
+			break;
+		}
+	}
+	if(line.size() && line[0] == '}'){
+		throw 100;
+	}
+	size_t dim;
+	int x = stoi(config, &dim, 10);
+	int y = stoi(config.substr(dim), nullptr, 10);
+	size_t pos = 0;
+	for(int i = 0; i < x*y; ++i){
+		size_t p;
+		try{
+			if(pos < line.size()){
+				board->push_back(stoi(line.substr(pos), &p, 10));
+			} else{
+				throw 404;
+			}
+		} catch(...){
+			throw 404;
+		}
+		pos += p;
+	}
+	file.close();
+}
+
 void IOHandler::saveSolution(bool result, std::string config, std::string board){
 	ofstream file("solutions.txt", ios::app);
 	if(!file.is_open()){
-		cout<<endl<<"This should NOT happen! (IOHandler::saveSolution)";
+		cout<<endl<<"This should NOT have happened! (IOHandler::saveSolution)";
 		return;
 	}
 	file<<'{'<<endl;
@@ -84,7 +121,7 @@ void IOHandler::saveSolution(bool result, std::string config, std::string board)
 void IOHandler::exportVisualised(bool result, string config, string board){
 	ofstream file("solutions_visualised.txt", ios::app);
 	if(!file.is_open()){
-		cout<<endl<<"This should NOT happen! (IOHandler::exportVisualised)";
+		cout<<endl<<"This should NOT have happened! (IOHandler::exportVisualised)";
 		return;
 	}
 	file<<"**** SOLUTION ****"<<endl;
