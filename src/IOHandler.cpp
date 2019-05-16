@@ -9,6 +9,12 @@
 
 using namespace std;
 
+void IOHandler::cleanup(){
+	remove("problems.txt");
+	remove("solutions.txt");
+	remove("solutions_visualised.txt");
+}
+
 void IOHandler::genProblemsTxt(){
 	ofstream file("problems.txt");
 	if(!file.is_open()){

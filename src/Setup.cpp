@@ -33,6 +33,7 @@ public:
 		cout<<"20  - Solve problems from \"problems.txt\""<<endl;
 		cout<<"22  - Generate \"problems.txt\" with help"<<endl;
 		cout<<"123 - HELP!"<<endl;
+		cout<<"357 - Remove app-related *.txt files"<<endl;
 		cout<<"0   - Exit"<<endl;
 	}
 
@@ -61,6 +62,9 @@ public:
 					break;
 				case 123:
 					help();
+					break;
+				case 357:
+					IOHandler::cleanup();
 					break;
 				default:
 					cout<<"Not available!"<<endl;

@@ -6,6 +6,7 @@
 
 class IOHandler{
 public:
+	static void cleanup();
 	static void genProblemsTxt();
 	static void solveProblems();
 	static void findSolution(std::string config, std::vector<int> *board);
