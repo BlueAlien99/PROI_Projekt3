@@ -159,6 +159,16 @@ class Interface::InterfaceImpl{
 		return str;
 	}
 
+	string getConfigStrChain(){
+		string pa = string(pawns->getCount(), 'P');
+		string ro = string(rooks->getCount(), 'R');
+		string bi = string(bishops->getCount(), 'B');
+		string qu = string(queens->getCount(), 'Q');
+		string kn = string(knights->getCount(), 'N');
+		string ki = string(kings->getCount(), 'K');
+		return pa+ro+bi+qu+kn+ki;
+	}
+
 public:
 
 	InterfaceImpl(uint xx, uint yy, uint pa, uint ro,
