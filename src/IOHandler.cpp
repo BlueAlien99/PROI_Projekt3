@@ -67,6 +67,7 @@ void IOHandler::solveProblems(){
 }
 
 void IOHandler::findSolution(string config, vector<int> *board){
+	bool found = 0;
 	ifstream file("solutions.txt");
 	if(!file.is_open()){
 		string str = "ERROR: Could not open file!";
@@ -76,11 +77,12 @@ void IOHandler::findSolution(string config, vector<int> *board){
 	while(!file.eof()){
 		getline(file, line);
 		if(config == line && !file.eof()){
+			found = 1;
 			getline(file, line);
 			break;
 		}
 	}
-	if(line.size() && line[0] == '}'){
+	if(found && line.size() && line[0] == '}'){
 		throw 100;
 	}
 	size_t dim;
@@ -104,18 +106,53 @@ void IOHandler::findSolution(string config, vector<int> *board){
 }
 
 void IOHandler::saveSolution(bool result, std::string config, std::string board){
-	ofstream file("solutions.txt", ios::app);
-	if(!file.is_open()){
+	bool input = 1;
+	bool found = 0;
+	ifstream fileIn("solutions.txt");
+	if(!fileIn.is_open()){
+		input = 0;
+	}
+	ofstream fileOut("IOHandler.temp", ios::trunc);
+	if(!fileOut.is_open()){
 		cout<<endl<<"This should NOT have happened! (IOHandler::saveSolution)";
 		return;
 	}
-	file<<'{'<<endl;
-	file<<config<<endl;
-	if(result){
-		file<<board<<endl;
+	if(input){
+		string line;
+		while(!fileIn.eof()){
+			getline(fileIn, line);
+			fileOut<<line;
+			if(!fileIn.eof()){
+				fileOut<<endl;
+			}
+			if(config == line && !fileIn.eof()){
+				found = 1;
+				getline(fileIn, line);
+				if(result){
+					fileOut<<board<<endl;
+				}
+				if(line.size() == 0 || line[0] == '}'){
+					fileOut<<'}'<<endl;
+				} else if(line.size() && line[0] == '{'){
+					fileOut<<'}'<<endl;
+					fileOut<<'{'<<endl;
+				}
+			}
+		}
+		fileIn.close();
 	}
-	file<<'}'<<endl;
-	file.close();
+	if(!found){
+		fileOut<<endl;
+		fileOut<<'{'<<endl;
+		fileOut<<config<<endl;
+		if(result){
+			fileOut<<board<<endl;
+		}
+		fileOut<<'}';
+	}
+	fileOut.close();
+	remove("solutions.txt");
+	rename("IOHandler.temp", "solutions.txt");
 }
 
 void IOHandler::exportVisualised(bool result, string config, string board){
