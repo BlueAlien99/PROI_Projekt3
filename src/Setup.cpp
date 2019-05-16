@@ -4,6 +4,7 @@
 #include "../include/Interface.h"
 #include "../include/IOHandler.h"
 
+#include <cstdlib>
 #include <iostream>
 #include <memory>
 
@@ -23,14 +24,16 @@ public:
 	}
 
 	void help(){
+		system("clear");
 		cout<<endl;
 		cout<<"----  MENU  ----"<<endl;
-		cout<<"1  - Create new board"<<endl;
-		cout<<"2  - Run algorithm"<<endl;
-		cout<<"3  - Print board in debug mode"<<endl;
-		cout<<"20 - Solve problems from \"problems.txt\""<<endl;
-		cout<<"22 - Generate \"problems.txt\" with help"<<endl;
-		cout<<"0  - Exit"<<endl;
+		cout<<"1   - Create new board"<<endl;
+		cout<<"2   - Run algorithm"<<endl;
+		cout<<"3   - Print board in debug mode"<<endl;
+		cout<<"20  - Solve problems from \"problems.txt\""<<endl;
+		cout<<"22  - Generate \"problems.txt\" with help"<<endl;
+		cout<<"123 - HELP!"<<endl;
+		cout<<"0   - Exit"<<endl;
 	}
 
 	void run(){
@@ -55,6 +58,9 @@ public:
 					break;
 				case 0:
 					cout<<"Exiting..."<<endl;
+					break;
+				case 123:
+					help();
 					break;
 				default:
 					cout<<"Not available!"<<endl;
