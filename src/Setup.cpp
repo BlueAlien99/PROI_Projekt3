@@ -31,6 +31,7 @@ public:
 		cout<<"2   - Run algorithm"<<endl;
 		cout<<"3   - Print board in debug mode"<<endl;
 		cout<<"20  - Solve problems from \"problems.txt\""<<endl;
+		cout<<"21  - Solve problems using brute-force"<<endl;
 		cout<<"22  - Generate \"problems.txt\" with help"<<endl;
 		cout<<"123 - HELP!"<<endl;
 		cout<<"357 - Remove app-related *.txt files"<<endl;
@@ -52,7 +53,10 @@ public:
 					printDebBoard();
 					break;
 				case 20:
-					IOHandler::solveProblems();
+					IOHandler::solveProblems(0);
+					break;
+				case 21:
+					IOHandler::solveProblems(1);
 					break;
 				case 22:
 					IOHandler::genProblemsTxt();

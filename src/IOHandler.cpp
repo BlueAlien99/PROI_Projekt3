@@ -31,7 +31,7 @@ void IOHandler::genProblemsTxt(){
 	file.close();
 }
 
-void IOHandler::solveProblems(){
+void IOHandler::solveProblems(bool brute){
 	ifstream file("problems.txt");
 	if(!file.is_open()){
 		cout<<endl<<"Could not find \"problems.txt\"..."<<endl;
@@ -66,7 +66,11 @@ void IOHandler::solveProblems(){
 			Interface board(data[0], data[1], data[2], data[3],
 							data[4], data[5], data[6], data[7]);
 			cout<<board.getConfigStr();
-			board.algorithm(0, 1);
+			if(brute){
+				board.algorithm(1, 1);
+			} else{
+				board.algorithm(0, 1);
+			}
 		}
 	}
 	file.close();

@@ -358,7 +358,7 @@ public:
 				brute = 1;
 			}
 		}
-		if(brute || (interact && batch)){
+		if(brute || (interact && batch && !result)){
 			result = algoBrute();
 			if(result){
 				cout<<getBoardStr();
