@@ -3,6 +3,7 @@
 #include "../include/Utilities.h"
 #include "../include/Interface.h"
 #include "../include/IOHandler.h"
+#include "../include/Tutorial.h"
 
 #include <cstdlib>
 #include <iostream>
@@ -27,14 +28,20 @@ public:
 		system("clear");
 		cout<<endl;
 		cout<<"----  MENU  ----"<<endl;
+		cout<<endl;
 		cout<<"1   - Create new board"<<endl;
 		cout<<"2   - Run algorithm"<<endl;
 		cout<<"3   - Print board in debug mode"<<endl;
+		cout<<endl;
 		cout<<"20  - Solve problems from \"problems.txt\""<<endl;
 		cout<<"21  - Solve problems using brute-force"<<endl;
 		cout<<"22  - Generate \"problems.txt\" with help"<<endl;
-		cout<<"123 - HELP!"<<endl;
+		cout<<endl;
+		cout<<"123 - Show tutorial"<<endl;
+		cout<<"321 - Run quiz"<<endl;
+		cout<<endl;
 		cout<<"357 - Remove app-related *.txt files"<<endl;
+		cout<<"911 - HELP!"<<endl;
 		cout<<"0   - Exit"<<endl;
 	}
 
@@ -61,14 +68,20 @@ public:
 				case 22:
 					IOHandler::genProblemsTxt();
 					break;
-				case 0:
-					cout<<"Exiting..."<<endl;
-					break;
 				case 123:
-					help();
+					Tutorial::run();
+					break;
+				case 321:
+					//quiz
 					break;
 				case 357:
 					IOHandler::cleanup();
+					break;
+				case 911:
+					help();
+					break;
+				case 0:
+					cout<<"Exiting..."<<endl;
 					break;
 				default:
 					cout<<"Not available!"<<endl;
