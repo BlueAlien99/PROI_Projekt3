@@ -2,12 +2,14 @@
 
 #include "../include/PieceInterface.h"
 #include "../include/IOHandler.h"
+#include "../include/Utilities.h"
 
 #include <cstdlib>
 #include <iostream>
 #include <limits>
 #include <memory>
 #include <vector>
+#include <set>
 
 using namespace std;
 
@@ -53,6 +55,82 @@ class Interface::InterfaceImpl{
 			}
 		}
 		return 0;
+	}
+
+	bool algoBrute(){
+		bool result = 0;
+		set<string> perms;
+		cout<<endl<<"Generating permutations..."<<endl;
+		try{
+			Utilities::getPermutations(getConfigStrChain(), &perms);
+		} catch(string ex){
+			cout<<endl<<ex<<endl;
+			return 0;
+		} catch(...){
+			return 0;
+		}
+		int pass = 0;
+		for(auto i = perms.begin(); i != perms.end(); ++i){
+			cout<<"Algorithm pass "<<++pass<<" out of "<<perms.size();
+			cout<<": "<<*i<<endl;
+			delete [] board;
+			board = new int [x*y] ();
+			string str = *i;
+			bool success = 1;
+			int set = 0;
+			for(auto j = str.begin(); j != str.end(); ++j){
+				switch(*j){
+					case 'P':
+						{
+							PieceInterface<Pawn> inPa(1);
+							success = algoPlace(&inPa, 0, 0, 1, str.size()-set);
+						}
+						break;
+					case 'R':
+						{
+							PieceInterface<Rook> inRo(1);
+							success = algoPlace(&inRo, 0, 0, 1, str.size()-set);
+						}
+						break;
+					case 'B':
+						{
+							PieceInterface<Bishop> inBi(1);
+							success = algoPlace(&inBi, 0, 0, 1, str.size()-set);
+						}
+						break;
+					case 'Q':
+						{
+							PieceInterface<Queen> inQu(1);
+							success = algoPlace(&inQu, 0, 0, 1, str.size()-set);
+						}
+						break;
+					case 'K':
+						{
+							PieceInterface<King> inKi(1);
+							success = algoPlace(&inKi, 0, 0, 1, str.size()-set);
+						}
+						break;
+					case 'N':
+						{
+							PieceInterface<Knight> inKn(1);
+							success = algoPlace(&inKn, 0, 0, 1, str.size()-set);
+						}
+						break;
+					default:
+						cout<<"Fatal error (algoBrute)"<<endl;
+						exit(EXIT_FAILURE);
+				}
+				if(!success){
+					break;
+				}
+				++set;
+			}
+			if(success){
+				result = 1;
+				break;
+			}
+		}
+		return result;
 	}
 
 	bool checkStroke(uint xx, uint yy, int type){
@@ -267,6 +345,25 @@ public:
 			} else{
 				cout<<endl<<"Placement impossible!"<<endl;
 				result = 0;
+			}
+			IOHandler::saveSolution(result, getConfigStrPlain(), getBoardStrPlain());
+		}
+		bool brute = 0;
+		if(interact && !batch && !result){
+			char c;
+			cout<<endl<<"Use brute-force? (y/n)"<<endl;
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.get(c);
+			if(c == 'y'){
+				brute = 1;
+			}
+		}
+		if(brute || (interact && batch)){
+			result = algoBrute();
+			if(result){
+				cout<<getBoardStr();
+			} else{
+				cout<<endl<<"Placement impossible!"<<endl;
 			}
 			IOHandler::saveSolution(result, getConfigStrPlain(), getBoardStrPlain());
 		}
