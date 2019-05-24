@@ -4,6 +4,7 @@
 #include "../include/Interface.h"
 #include "../include/IOHandler.h"
 #include "../include/Tutorial.h"
+#include "../include/Quiz.h"
 
 #include <cstdlib>
 #include <iostream>
@@ -39,6 +40,7 @@ public:
 		cout<<endl;
 		cout<<"123 - Show tutorial"<<endl;
 		cout<<"321 - Run quiz"<<endl;
+		cout<<"333 - Show scoreboard"<<endl;
 		cout<<endl;
 		cout<<"357 - Remove app-related *.txt files"<<endl;
 		cout<<"911 - HELP!"<<endl;
@@ -72,7 +74,10 @@ public:
 					Tutorial::run();
 					break;
 				case 321:
-					//quiz
+					Quiz::run();
+					break;
+				case 333:
+					//scoreboard
 					break;
 				case 357:
 					IOHandler::cleanup();

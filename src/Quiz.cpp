@@ -1,12 +1,50 @@
 #include <../include/Quiz.h>
 
+#include <../include/IOHandler.h>
+
 #include <cstdlib>
 #include <iostream>
+#include <iomanip>
 #include <vector>
 
 #define QUIZ_LENGTH 8
 
 using namespace std;
+
+void Quiz::run(){
+	vector<pair<string, string> > ques;
+	generator(&ques);
+	uint quesCount = ques.size();
+	struct Player player(quesCount);
+	string ans = "";
+	while(!ques.empty()){
+		system("clear");
+		cout<<endl;
+		cout<<ans<<endl;
+		cout<<endl;
+		cout<<"Question "<<quesCount-ques.size()+1<<" of "<<quesCount<<endl;
+		cout<<endl;
+		bool ok = question(ques[0].first, ques[0].second);
+		if(ok){
+			ans += "1";
+			player.correctQues++;
+		} else{
+			ans += "0";
+		}
+		ques.erase(ques.begin());
+	}
+	system("clear");
+	cout<<endl;
+	cout<<ans<<endl;
+	cout<<endl;
+	cout<<"----  SUMMARY  ----"<<endl;
+	cout<<endl;
+	string cor = to_string(player.correctQues) + " / " + to_string(player.totalQues);
+	cout<<setw(12)<<"Correct: "<<setw(6)<<cor<<endl;
+	cout<<setw(12)<<"Time: "<<setw(6)<<player.time<<" sec"<<endl;
+	cout<<setw(12)<<"Score: "<<setw(6)<<player.score<<" pts"<<endl;
+	cout<<endl;
+}
 
 void Quiz::generator(vector<pair<string, string> > *ques){
 	vector<pair<string, string> > bank;
