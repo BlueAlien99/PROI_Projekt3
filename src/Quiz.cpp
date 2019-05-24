@@ -2,32 +2,54 @@
 
 #include <../include/IOHandler.h>
 
+#include <chrono>
 #include <cstdlib>
 #include <iostream>
 #include <iomanip>
+#include <limits>
 #include <vector>
 
 #define QUIZ_LENGTH 8
+#define BASE_POINTS 1000
+#define BASE_TIME 10000
 
 using namespace std;
 
 void Quiz::run(){
+	system("clear");
+	cout<<endl;
+	cout<<"----  RULES  ----"<<endl;
+	cout<<endl;
+	cout<<"- Answers must be in lower case"<<endl;
+	cout<<"- English articles (a, an, the) must be omitted"<<endl;
+	cout<<endl;
+	cout<<"Type anything to start..."<<endl;
+	string xd;
+	cin>>xd;
 	vector<pair<string, string> > ques;
 	generator(&ques);
 	uint quesCount = ques.size();
 	struct Player player(quesCount);
 	string ans = "";
+	int dur = 0;
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	while(!ques.empty()){
 		system("clear");
 		cout<<endl;
 		cout<<ans<<endl;
+		cout<<dur/(double)1000<<" sec"<<endl;
 		cout<<endl;
 		cout<<"Question "<<quesCount-ques.size()+1<<" of "<<quesCount<<endl;
 		cout<<endl;
+		auto begin = chrono::steady_clock::now();
 		bool ok = question(ques[0].first, ques[0].second);
+		auto end = chrono::steady_clock::now();
+		dur = chrono::duration_cast<chrono::milliseconds>(end - begin).count();
+		player.time += dur;
 		if(ok){
 			ans += "1";
 			player.correctQues++;
+			player.score += max(0, BASE_POINTS * (BASE_TIME - dur)) / 1000;
 		} else{
 			ans += "0";
 		}
@@ -36,14 +58,23 @@ void Quiz::run(){
 	system("clear");
 	cout<<endl;
 	cout<<ans<<endl;
+	cout<<dur/(double)1000<<" sec"<<endl;
 	cout<<endl;
 	cout<<"----  SUMMARY  ----"<<endl;
 	cout<<endl;
 	string cor = to_string(player.correctQues) + " / " + to_string(player.totalQues);
 	cout<<setw(12)<<"Correct: "<<setw(6)<<cor<<endl;
-	cout<<setw(12)<<"Time: "<<setw(6)<<player.time<<" sec"<<endl;
+	cout<<setw(12)<<"Time: "<<setw(6)<<player.time/(double)1000<<" sec"<<endl;
 	cout<<setw(12)<<"Score: "<<setw(6)<<player.score<<" pts"<<endl;
 	cout<<endl;
+	cout<<"What's your name? (max 16 chars)"<<endl;
+	string name;
+	cin>>name;
+	player.name = name.substr(0, 16);
+	IOHandler::saveQuizScore(player.name, player.correctQues, player.totalQues,
+												player.time, player.score);
+	cout<<endl<<"Type anything to continue..."<<endl;
+	cin>>xd;
 }
 
 void Quiz::generator(vector<pair<string, string> > *ques){
@@ -137,7 +168,7 @@ bool Quiz::question(string q, string a){
 	cout<<q<<endl;
 	cout<<endl;
 	string str;
-	cin>>str;
+	getline(cin, str);
 	if(str == a){
 		return 1;
 	} else{

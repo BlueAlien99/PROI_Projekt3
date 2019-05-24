@@ -12,6 +12,8 @@ public:
 	static void findSolution(std::string config, std::vector<int> *board);
 	static void saveSolution(bool result, std::string config, std::string board);
 	static void exportVisualised(bool result, std::string config, std::string board);
+	static void saveQuizScore(std::string name, uint correct, uint total,
+													double time, int score);
 };
 
 #endif

@@ -75,6 +75,7 @@ public:
 					break;
 				case 321:
 					Quiz::run();
+					help();
 					break;
 				case 333:
 					//scoreboard

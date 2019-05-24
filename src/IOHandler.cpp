@@ -13,6 +13,7 @@ void IOHandler::cleanup(){
 	remove("problems.txt");
 	remove("solutions.txt");
 	remove("solutions_visualised.txt");
+	remove("scoreboard.txt");
 }
 
 void IOHandler::genProblemsTxt(){
@@ -183,4 +184,21 @@ void IOHandler::exportVisualised(bool result, string config, string board){
 	file<<endl<<"**** ######## ****"<<endl;
 	file<<endl<<endl;
 	file.close();
+}
+
+void IOHandler::saveQuizScore(string name, uint correct, uint total,
+												double time, int score){
+	ofstream file("scoreboard.txt", ios::app);
+	if(!file.is_open()){
+		cout<<endl<<"This should NOT have happened! (IOHandler::saveQuizScore)";
+		return;
+	}
+	file<<"{"<<endl;
+	file<<"Name="<<name<<";"<<endl;
+	file<<"Correct="<<correct<<";"<<endl;
+	file<<"Total="<<total<<";"<<endl;
+	file<<"Time="<<time<<";"<<endl;
+	file<<"Score="<<score<<";"<<endl;
+	file<<"}"<<endl;
+	file<<endl;
 }

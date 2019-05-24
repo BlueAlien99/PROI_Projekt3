@@ -12,7 +12,7 @@ private:
 		std::string name;
 		uint totalQues;
 		uint correctQues;
-		double time;
+		int time;
 		int score;
 		Player(uint totalQues)
 		: name(""), totalQues(totalQues), correctQues(0), time(0), score(0) {
