@@ -1,6 +1,9 @@
 #ifndef IOHANDLER_H
 #define IOHANDLER_H
 
+#include "Quiz.h"
+
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -14,6 +17,11 @@ public:
 	static void exportVisualised(bool result, std::string config, std::string board);
 	static void saveQuizScore(std::string name, uint correct, uint total,
 													double time, int score);
+	static void printScoreboard();
+private:
+	static bool importPlayerStats(struct Player *player, std::ifstream *file);
+	static std::string extractString(std::string key, std::string data);
+	static uint extractUint(std::string key, std::string data);
 };
 
 #endif

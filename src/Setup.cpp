@@ -78,7 +78,7 @@ public:
 					help();
 					break;
 				case 333:
-					//scoreboard
+					IOHandler::printScoreboard();
 					break;
 				case 357:
 					IOHandler::cleanup();

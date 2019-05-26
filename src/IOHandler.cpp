@@ -1,7 +1,9 @@
 #include "../include/IOHandler.h"
 
 #include "../include/Interface.h"
+#include "../include/Quiz.h"
 
+#include <climits>
 #include <ctime>
 #include <fstream>
 #include <iomanip>
@@ -201,4 +203,92 @@ void IOHandler::saveQuizScore(string name, uint correct, uint total,
 	file<<"Score="<<score<<";"<<endl;
 	file<<"}"<<endl;
 	file<<endl;
+}
+
+void IOHandler::printScoreboard(){
+	ifstream file("scoreboard.txt");
+	if(!file.is_open()){
+		cout<<endl<<"No records to display!"<<endl;
+		return;
+	}
+	cout<<endl<<endl;
+	cout<<setw(4)<<"##"<<setw(18)<<"Player name"<<setw(10)<<"Correct";
+	cout<<setw(10)<<"Time"<<setw(10)<<"Score"<<endl<<endl;
+	while(!file.eof()){
+		struct Player *player = new struct Player();
+		if(importPlayerStats(player, &file)){
+			cout<<setw(4)<<"--"<<setw(18)<<player->name.substr(0, 16);
+			string ques = to_string(player->correctQues);
+			ques += " / " + to_string(player->totalQues);
+			cout<<setw(10)<<ques;
+			cout<<setw(10)<<fixed<<setprecision(2)<<player->time/(double)1000;
+			cout<<setw(10)<<player->score<<endl;
+		}
+		delete player;
+	}
+	cout<<endl;
+}
+
+bool IOHandler::importPlayerStats(struct Player *player, ifstream *file){
+	string line;
+	getline(*file, line);
+	if(line[0] != '{'){
+		return 0;
+	}
+	getline(*file, line);
+	player->name = extractString("Name", line);
+	if(player->name == ""){
+		return 0;
+	}
+	getline(*file, line);
+	player->correctQues = extractUint("Correct", line);
+	if(player->correctQues == INT_MAX){
+		return 0;
+	}
+	getline(*file, line);
+	player->totalQues = extractUint("Total", line);
+	if(player->totalQues == INT_MAX){
+		return 0;
+	}
+	getline(*file, line);
+	player->time = extractUint("Time", line);
+	if(player->time == INT_MAX){
+		return 0;
+	}
+	getline(*file, line);
+	player->score = extractUint("Score", line);
+	if(player->score == INT_MAX){
+		return 0;
+	}
+	getline(*file, line);
+	if(line[0] != '}'){
+		return 0;
+	}
+	return 1;
+}
+
+string IOHandler::extractString(string key, string data){
+	string ret = "";
+	if(data.size() && key == data.substr(0, key.size())){
+		size_t beg = data.find("=");
+		size_t end = data.find(";");
+		if(beg != string::npos && end != string::npos && end-beg > 1){
+			ret = data.substr(beg+1, (end-beg)-1);
+		}
+	}
+	return ret;
+}
+
+uint IOHandler::extractUint(string key, string data){
+	string str = extractString(key, data);
+	int ret = -1;
+	try{
+		ret = stoi(str);
+	} catch(...){
+		ret = INT_MAX;
+	}
+	if(ret < 0){
+		ret = INT_MAX;
+	}
+	return ret;
 }
