@@ -8,6 +8,7 @@ using namespace std;
 void Tutorial::run(){
 	void (*fun[])() = {page_zero, setup, pawn, rook, knight, bishop, queen,
 					king, check, checkmate, stalemate, castling, enpassant};
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	int pages = (sizeof(fun)/sizeof(fun[0]))-1;
 	int i = 0;
 	while(i >= 0 && i <= pages){
@@ -16,14 +17,13 @@ void Tutorial::run(){
 		cout<<endl;
 		(*fun[i])();
 		cout<<endl;
-		char c;
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		cin.get(c);
-		if(c == 'q'){
+		string c;
+		getline(cin, c);
+		if(c == "q"){
 			break;
-		} else if(c == 'n'){
+		} else if(c == "n" || c == ""){
 			++i;
-		} else if(c == 'p'){
+		} else if(c == "p"){
 			--i;
 		}
 	}
@@ -34,7 +34,7 @@ void Tutorial::page_zero(){
 	cout<<"https://www.instructables.com/id/Playing-Chess/"<<endl;
 	cout<<endl;
 	cout<<"Navigation:"<<endl;
-	cout<<"n - next page"<<endl;
+	cout<<"n - next page (or press enter)"<<endl;
 	cout<<"p - previous page"<<endl;
 	cout<<"q - quit"<<endl;
 }

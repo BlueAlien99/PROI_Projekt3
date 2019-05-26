@@ -31,16 +31,16 @@ void Quiz::run(){
 	cout<<"- Answers must be in lower case"<<endl;
 	cout<<"- English articles (a, an, the) must be omitted"<<endl;
 	cout<<endl;
-	cout<<"Type anything to start..."<<endl;
+	cout<<"Press enter to start..."<<endl;
 	string xd;
-	cin>>xd;
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	getline(cin, xd);
 	vector<pair<string, string> > ques;
 	generator(&ques);
 	uint quesCount = ques.size();
 	struct Player player(quesCount);
 	string ans = "";
 	int dur = 0;
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	while(!ques.empty()){
 		system("clear");
 		cout<<endl;
@@ -78,12 +78,12 @@ void Quiz::run(){
 	cout<<endl;
 	cout<<"What's your name? (max 16 chars)"<<endl;
 	string name;
-	cin>>name;
+	getline(cin, name);
 	player.name = name.substr(0, 16);
 	IOHandler::saveQuizScore(player.name, player.correctQues, player.totalQues,
 												player.time, player.score);
-	cout<<endl<<"Type anything to continue..."<<endl;
-	cin>>xd;
+	cout<<endl<<"Press enter to continue..."<<endl;
+	getline(cin, xd);
 }
 
 void Quiz::generator(vector<pair<string, string> > *ques){

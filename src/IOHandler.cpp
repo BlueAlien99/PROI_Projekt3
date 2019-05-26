@@ -18,6 +18,7 @@ void IOHandler::cleanup(){
 	remove("solutions.txt");
 	remove("solutions_visualised.txt");
 	remove("scoreboard.txt");
+	cout<<endl<<"Done!"<<endl;
 }
 
 void IOHandler::genProblemsTxt(){
@@ -225,7 +226,8 @@ void IOHandler::printScoreboard(){
 	file.close();
 	sort(players.begin(), players.end(), PtrCmp());
 	if(players.size()){
-		cout<<endl<<endl;
+		system("clear");
+		cout<<endl;
 		cout<<setw(4)<<"##"<<setw(18)<<"Player name"<<setw(10)<<"Correct";
 		cout<<setw(10)<<"Time"<<setw(10)<<"Score"<<endl<<endl;
 	} else{

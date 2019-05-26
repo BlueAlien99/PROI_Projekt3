@@ -57,6 +57,7 @@ public:
 					break;
 				case 2:
 					algorithm();
+					help();
 					break;
 				case 3:
 					printDebBoard();
@@ -72,6 +73,7 @@ public:
 					break;
 				case 123:
 					Tutorial::run();
+					help();
 					break;
 				case 321:
 					Quiz::run();
