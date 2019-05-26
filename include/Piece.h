@@ -16,38 +16,44 @@ protected:
 	std::pair<int,int> loc;
 public:
 	Piece();
-	~Piece();
+	virtual ~Piece();
 	Piece(const Piece &piece);
 	int getID();
 	void setLocation(int x, int y);
 	std::pair<int,int> getLocation();
 	int moveChar();
 	std::vector<std::pair<int,int> > moveSquares();
+	virtual int getRelativeValue();
 };
 
 class Pawn: public Piece{
 public:
 	Pawn();
+	int getRelativeValue();
 };
 
 class Rook: public Piece{
 public:
 	Rook();
+	int getRelativeValue();
 };
 
 class Bishop: public Piece{
 public:
 	Bishop();
+	int getRelativeValue();
 };
 
 class Queen: public Piece{
 public:
 	Queen();
+	int getRelativeValue();
 };
 
 class Knight: public Piece{
 public:
 	Knight();
+	int getRelativeValue();
 };
 
 class King: public Piece{

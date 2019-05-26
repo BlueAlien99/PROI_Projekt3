@@ -43,6 +43,10 @@ vector<pair<int,int> > Piece::moveSquares(){
 	return mv->sq;
 }
 
+int Piece::getRelativeValue(){
+	return -1;
+}
+
 Pawn::Pawn(){
 	mv->id = -10;
 	mv->sq.push_back(make_pair(1, 1));
@@ -51,10 +55,18 @@ Pawn::Pawn(){
 	mv->sq.push_back(make_pair(-1, 1));
 }
 
+int Pawn::getRelativeValue(){
+	return 1;
+}
+
 Rook::Rook(){
 	mv->id = -20;
 	mv->v = 1;
 	mv->h = 1;
+}
+
+int Rook::getRelativeValue(){
+	return 5;
 }
 
 Bishop::Bishop(){
@@ -62,11 +74,19 @@ Bishop::Bishop(){
 	mv->d = 1;
 }
 
+int Bishop::getRelativeValue(){
+	return 3;
+}
+
 Queen::Queen(){
 	mv->id = -40;
 	mv->v = 1;
 	mv->h = 1;
 	mv->d = 1;
+}
+
+int Queen::getRelativeValue(){
+	return 9;
 }
 
 Knight::Knight(){
@@ -79,6 +99,10 @@ Knight::Knight(){
 	mv->sq.push_back(make_pair(-2, -1));
 	mv->sq.push_back(make_pair(-2, 1));
 	mv->sq.push_back(make_pair(-1, 2));
+}
+
+int Knight::getRelativeValue(){
+	return 3;
 }
 
 King::King(){
