@@ -16,6 +16,10 @@ struct Player{
 	}
 };
 
+struct PtrCmp{
+	bool operator()(const Player *p1, const Player *p2);
+};
+
 class Quiz{
 public:
 	static void run();

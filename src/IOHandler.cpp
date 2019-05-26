@@ -3,11 +3,13 @@
 #include "../include/Interface.h"
 #include "../include/Quiz.h"
 
+#include <algorithm>
 #include <climits>
 #include <ctime>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -211,20 +213,32 @@ void IOHandler::printScoreboard(){
 		cout<<endl<<"No records to display!"<<endl;
 		return;
 	}
-	cout<<endl<<endl;
-	cout<<setw(4)<<"##"<<setw(18)<<"Player name"<<setw(10)<<"Correct";
-	cout<<setw(10)<<"Time"<<setw(10)<<"Score"<<endl<<endl;
+	vector<struct Player*> players;
 	while(!file.eof()){
 		struct Player *player = new struct Player();
 		if(importPlayerStats(player, &file)){
-			cout<<setw(4)<<"--"<<setw(18)<<player->name.substr(0, 16);
-			string ques = to_string(player->correctQues);
-			ques += " / " + to_string(player->totalQues);
-			cout<<setw(10)<<ques;
-			cout<<setw(10)<<fixed<<setprecision(2)<<player->time/(double)1000;
-			cout<<setw(10)<<player->score<<endl;
+			players.push_back(player);
+		} else{
+			delete player;
 		}
-		delete player;
+	}
+	file.close();
+	sort(players.begin(), players.end(), PtrCmp());
+	if(players.size()){
+		cout<<endl<<endl;
+		cout<<setw(4)<<"##"<<setw(18)<<"Player name"<<setw(10)<<"Correct";
+		cout<<setw(10)<<"Time"<<setw(10)<<"Score"<<endl<<endl;
+	} else{
+		cout<<endl<<"No records to display!";
+	}
+	for(uint i = 0; i < players.size(); ++i){
+		cout<<setw(4)<<i+1<<setw(18)<<players[i]->name.substr(0, 16);
+		string ques = to_string(players[i]->correctQues);
+		ques += " / " + to_string(players[i]->totalQues);
+		cout<<setw(10)<<ques;
+		cout<<setw(10)<<fixed<<setprecision(2)<<players[i]->time/(double)1000;
+		cout<<setw(10)<<players[i]->score<<endl;
+		delete players[i];
 	}
 	cout<<endl;
 }

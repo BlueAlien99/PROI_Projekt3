@@ -15,6 +15,14 @@
 
 using namespace std;
 
+bool PtrCmp::operator()(const Player *p1, const Player *p2){
+	if(p1->score != p2->score){
+		return p1->score > p2->score;
+	} else{
+		return p1->time < p2->time;
+	}
+}
+
 void Quiz::run(){
 	system("clear");
 	cout<<endl;
@@ -49,7 +57,8 @@ void Quiz::run(){
 		if(ok){
 			ans += "1";
 			player.correctQues++;
-			player.score += max(0, BASE_POINTS * (BASE_TIME - dur)) / 1000;
+			int pts = BASE_POINTS * (BASE_TIME - dur) * (8 / (double)quesCount);
+			player.score += max(0, pts) / 1000;
 		} else{
 			ans += "0";
 		}
