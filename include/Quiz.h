@@ -24,6 +24,7 @@ class Quiz{
 public:
 	static void run();
 private:
+	static void summary(Player *player, std::string ans, int dur);
 	static void generator(std::vector<std::pair<std::string, std::string> > *ques);
 	static bool question(std::string q, std::string a);
 };

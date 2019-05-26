@@ -198,14 +198,16 @@ void IOHandler::saveQuizScore(string name, uint correct, uint total,
 		cout<<endl<<"This should NOT have happened! (IOHandler::saveQuizScore)";
 		return;
 	}
-	file<<"{"<<endl;
-	file<<"Name="<<name<<";"<<endl;
-	file<<"Correct="<<correct<<";"<<endl;
-	file<<"Total="<<total<<";"<<endl;
-	file<<"Time="<<time<<";"<<endl;
-	file<<"Score="<<score<<";"<<endl;
-	file<<"}"<<endl;
-	file<<endl;
+	if(name.size()){
+		file<<"{"<<endl;
+		file<<"Name="<<name<<";"<<endl;
+		file<<"Correct="<<correct<<";"<<endl;
+		file<<"Total="<<total<<";"<<endl;
+		file<<"Time="<<time<<";"<<endl;
+		file<<"Score="<<score<<";"<<endl;
+		file<<"}"<<endl;
+		file<<endl;
+	}
 }
 
 void IOHandler::printScoreboard(){

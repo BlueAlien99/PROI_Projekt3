@@ -64,6 +64,10 @@ void Quiz::run(){
 		}
 		ques.erase(ques.begin());
 	}
+	summary(&player, ans, dur);
+}
+
+void Quiz::summary(Player *player, string ans, int dur){
 	system("clear");
 	cout<<endl;
 	cout<<ans<<endl;
@@ -71,18 +75,19 @@ void Quiz::run(){
 	cout<<endl;
 	cout<<"----  SUMMARY  ----"<<endl;
 	cout<<endl;
-	string cor = to_string(player.correctQues) + " / " + to_string(player.totalQues);
+	string cor = to_string(player->correctQues) + " / " + to_string(player->totalQues);
 	cout<<setw(12)<<"Correct: "<<setw(6)<<cor<<endl;
-	cout<<setw(12)<<"Time: "<<setw(6)<<player.time/(double)1000<<" sec"<<endl;
-	cout<<setw(12)<<"Score: "<<setw(6)<<player.score<<" pts"<<endl;
+	cout<<setw(12)<<"Time: "<<setw(6)<<player->time/(double)1000<<" sec"<<endl;
+	cout<<setw(12)<<"Score: "<<setw(6)<<player->score<<" pts"<<endl;
 	cout<<endl;
 	cout<<"What's your name? (max 16 chars)"<<endl;
 	string name;
 	getline(cin, name);
-	player.name = name.substr(0, 16);
-	IOHandler::saveQuizScore(player.name, player.correctQues, player.totalQues,
-												player.time, player.score);
+	player->name = name.substr(0, 16);
+	IOHandler::saveQuizScore(player->name, player->correctQues, player->totalQues,
+												player->time, player->score);
 	cout<<endl<<"Press enter to continue..."<<endl;
+	string xd;
 	getline(cin, xd);
 }
 
