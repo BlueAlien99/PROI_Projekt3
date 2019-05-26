@@ -133,6 +133,83 @@ class Interface::InterfaceImpl{
 		return result;
 	}
 
+	bool algorithmFindSolution(bool interact, bool batch, bool result, int *flag){
+		if(interact && !batch){
+			vector<int> data;
+			try{
+				IOHandler::findSolution(getConfigStrPlain(), &data);
+				if(x*y != data.size()){
+					throw 404;
+				}
+				*flag = 0;
+				for(uint i = 0; i < x*y; ++i){
+					board[i] = data[i];
+				}
+			} catch(int er){
+				if(er == 100){
+					*flag = 1;
+				}
+			} catch(...){
+				// Do nothing
+			}
+		}
+		if(*flag == 0 || *flag == 1){
+			cout<<endl<<"Solution imported from \"solutions.txt\"!"<<endl;
+			if(*flag == 0){
+				cout<<getBoardStr();
+				result = 1;
+			}
+			else if(*flag == 1){
+				cout<<endl<<"Placement impossible!"<<endl;
+				result = 0;
+			}
+			char c;
+			cout<<endl<<"Run algorithm anyway? (y/n)"<<endl;
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.get(c);
+			if(c == 'y'){
+				*flag = -1;
+			}
+		}
+		return result;
+	}
+
+	bool algorithmBruteAndExport(bool interact, bool batch, bool result){
+		bool brute = 0;
+		if(interact && !batch && !result){
+			char c;
+			cout<<endl<<"Use brute-force? (y/n)"<<endl;
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.get(c);
+			if(c == 'y'){
+				brute = 1;
+			}
+		}
+		if(brute || (interact && batch && !result)){
+			result = algoBrute();
+			if(result){
+				cout<<getBoardStr();
+			} else{
+				cout<<endl<<"Placement impossible!"<<endl;
+			}
+			IOHandler::saveSolution(result, getConfigStrPlain(), getBoardStrPlain());
+		}
+		bool save = 0;
+		if(interact && !batch){
+			char c;
+			cout<<endl<<"Export results? (y/n)"<<endl;
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.get(c);
+			if(c == 'y'){
+				save = 1;
+			}
+		}
+		if(batch || save){
+			IOHandler::exportVisualised(result, getConfigStr(), getBoardStr());
+		}
+		return result;
+	}
+
 	bool checkStroke(uint xx, uint yy, int type){
 		if(type & 1){
 			for(uint i = xx; i < x*y; i += x){
@@ -292,43 +369,7 @@ public:
 	bool algorithm(bool interact, bool batch){
 		bool result = 0;
 		int flag = -1;
-		if(interact && !batch){
-			vector<int> data;
-			try{
-				IOHandler::findSolution(getConfigStrPlain(), &data);
-				if(x*y != data.size()){
-					throw 404;
-				}
-				flag = 0;
-				for(uint i = 0; i < x*y; ++i){
-					board[i] = data[i];
-				}
-			} catch(int er){
-				if(er == 100){
-					flag = 1;
-				}
-			} catch(...){
-				// Do nothing
-			}
-		}
-		if(flag == 0 || flag == 1){
-			cout<<endl<<"Solution imported from \"solutions.txt\"!"<<endl;
-			if(flag == 0){
-				cout<<getBoardStr();
-				result = 1;
-			}
-			else if(flag == 1){
-				cout<<endl<<"Placement impossible!"<<endl;
-				result = 0;
-			}
-			char c;
-			cout<<endl<<"Run algorithm anyway? (y/n)"<<endl;
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			cin.get(c);
-			if(c == 'y'){
-				flag = -1;
-			}
-		}
+		result = algorithmFindSolution(interact, batch, result, &flag);
 		if(flag != 0 && flag != 1){
 			delete [] board;
 			board = new int [x*y] ();
@@ -348,38 +389,7 @@ public:
 			}
 			IOHandler::saveSolution(result, getConfigStrPlain(), getBoardStrPlain());
 		}
-		bool brute = 0;
-		if(interact && !batch && !result){
-			char c;
-			cout<<endl<<"Use brute-force? (y/n)"<<endl;
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			cin.get(c);
-			if(c == 'y'){
-				brute = 1;
-			}
-		}
-		if(brute || (interact && batch && !result)){
-			result = algoBrute();
-			if(result){
-				cout<<getBoardStr();
-			} else{
-				cout<<endl<<"Placement impossible!"<<endl;
-			}
-			IOHandler::saveSolution(result, getConfigStrPlain(), getBoardStrPlain());
-		}
-		bool save = 0;
-		if(interact && !batch){
-			char c;
-			cout<<endl<<"Export results? (y/n)"<<endl;
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			cin.get(c);
-			if(c == 'y'){
-				save = 1;
-			}
-		}
-		if(batch || save){
-			IOHandler::exportVisualised(result, getConfigStr(), getBoardStr());
-		}
+		result = algorithmBruteAndExport(interact, batch, result);
 		return result;
 	}
 
