@@ -4,6 +4,7 @@
 class Tutorial{
 public:
 	static void run();
+private:
 	static void page_zero();
 	static void setup();
 	static void pawn();
