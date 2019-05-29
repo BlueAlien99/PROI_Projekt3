@@ -16,7 +16,7 @@ public:
 	static void saveSolution(bool result, std::string config, std::string board);
 	static void exportVisualised(bool result, std::string config, std::string board);
 	static void saveQuizScore(std::string name, uint correct, uint total,
-													double time, int score);
+													int time, int score);
 	static void printScoreboard();
 private:
 	static bool importPlayerStats(struct Player *player, std::ifstream *file);

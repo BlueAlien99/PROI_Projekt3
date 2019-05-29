@@ -192,7 +192,7 @@ void IOHandler::exportVisualised(bool result, string config, string board){
 }
 
 void IOHandler::saveQuizScore(string name, uint correct, uint total,
-												double time, int score){
+												int time, int score){
 	ofstream file("scoreboard.txt", ios::app);
 	if(!file.is_open()){
 		cout<<endl<<"This should NOT have happened! (IOHandler::saveQuizScore)";
