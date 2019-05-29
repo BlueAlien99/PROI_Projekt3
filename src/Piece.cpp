@@ -21,6 +21,7 @@ Piece::~Piece(){
 Piece::Piece(const Piece &piece){
 	mv = piece.mv;
 	++mv->count;
+	loc = piece.loc;
 }
 
 int Piece::getID(){
