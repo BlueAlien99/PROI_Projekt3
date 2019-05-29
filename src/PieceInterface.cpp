@@ -9,6 +9,9 @@ using namespace std;
 
 template <class T>
 PieceInterface<T>::PieceInterface(int n){
+	if(n > 100){
+		n = 100;
+	}
 	if(n > 0){
 		pieces.push_back(new T);
 	}

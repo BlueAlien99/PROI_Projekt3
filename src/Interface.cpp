@@ -337,10 +337,14 @@ public:
 		x = xx;
 		if(!x){
 			x = 1;
+		} else if(x > 100){
+			x = 100;
 		}
 		y = yy;
 		if(!y){
 			y = 1;
+		} else if(y > 100){
+			y = 100;
 		}
 		board = new int [x*y] ();
 	}
